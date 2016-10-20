@@ -18,7 +18,6 @@ request(url, function (error, response, body) {
     var $section = $(this);
     var $link = $section.find('> a');
     var name = $link.text().trim();
-    var href = $link.attr('href');
     var $guides = $section.find('ol li a');
     var section = {
       name: name
@@ -32,25 +31,35 @@ request(url, function (error, response, body) {
         .filter(function (i) { return !!i });
       var sectionId, guideId, derived;
 
+      // Both section and guide available
       if (hrefSplit.length === 2) {
         sectionId = hrefSplit[0];
         guideId = hrefSplit[1];
+      // Only section is available, derive the guide id
       } else if (hrefSplit.length === 1) {
         sectionId = hrefSplit[0];
         guideId = guideName.toLowerCase().replace(/\s+/g, '-');
         derived = true;
       }
 
+      // Set section id if it doesn't have one yet
       if (!section.id) {
         section.id = sectionId;
       }
 
-      return { name: guideName, href: guideHref, id: guideId, derived: derived };
+      return {
+        name: guideName,
+        href: guideHref,
+        id: guideId,
+        derived: derived
+      };
     });
 
     section.guides = guides;
     toc.sections.push(section);
   });
-  // Result
+
+  // TODO: Push result up to couch
+  // Maybe scrape the guides as well and fix their ids and next/previous links.
   console.log(toc);
 });
