@@ -11,8 +11,16 @@ var toc = {
 };
 
 request(url, function (error, response, body) {
+  if (error) {
+    throw new Error(error);
+  }
+
   var $ = cheerio.load(body);
   var $sections = $('li.toc-level-0');
+
+  if (!$sections.length) {
+    throw new Error('No TOC available');
+  }
 
   $sections.each(function () {
     var $section = $(this);
