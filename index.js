@@ -7,7 +7,7 @@ var Bluebird = require('bluebird');
 var dbUrl = 'http://localhost:5984/kittens';
 var db = new PouchDB(dbUrl);
 var language = 'en-US';
-var baseUrl = 'https://guides.emberjs.com/';
+var baseUrl = 'https://cdn.rawgit.com/emberjs/guides.emberjs.com/master/snapshots/';
 var versionsUrl = 'https://cdn.rawgit.com/emberjs/guides.emberjs.com/master/snapshots/versions.json';
 
 db.destroy().then(function () {
@@ -21,7 +21,7 @@ db.destroy().then(function () {
     var versions = JSON.parse(body);
 
     versions.forEach(function(version, index) {
-      var url = baseUrl + version;
+      var url = baseUrl + version + '/index.html';
       var toc = {
         type: 'toc',
         language: language,
